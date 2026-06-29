@@ -231,10 +231,10 @@ function initHeroAnimations() {
     duration: 0.8,
   }, '-=0.5');
 
-  // Hero image subtle zoom on load
+  // Hero image: subtle scale-in on load
   gsap.fromTo('#heroImg',
-    { scale: 1.08 },
-    { scale: 1.02, duration: 1.8, ease: 'power2.out', delay: 0 }
+    { scale: 1.1 },
+    { scale: 1.05, duration: 1.8, ease: 'power2.out', delay: 0 }
   );
 }
 
@@ -378,84 +378,81 @@ function initScrollAnimations() {
    PARALLAX EFFECTS
 ══════════════════════════════════════════ */
 function initParallax() {
-  // Hero parallax on scroll
-  gsap.to('#heroBg', {
-    yPercent: 20,
-    ease: 'none',
-    scrollTrigger: {
-      trigger: '.hero',
-      start: 'top top',
-      end: 'bottom top',
-      scrub: 1,
-    },
-  });
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
-  // Hero image scale on scroll
-  gsap.to('#heroImg', {
-    scale: 1.12,
-    ease: 'none',
-    scrollTrigger: {
-      trigger: '.hero',
-      start: 'top top',
-      end: 'bottom top',
-      scrub: 1.5,
-    },
-  });
-
-  // Parallax for all parallax-img elements
-  gsap.utils.toArray('.parallax-img').forEach((img) => {
-    const wrap = img.closest('.parallax-wrap');
-    if (!wrap) return;
-
-    gsap.fromTo(img,
-      { yPercent: -8 },
-      {
-        yPercent: 8,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: wrap,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1.2,
-        },
-      }
-    );
-  });
-
-  // Landscape parallax
-  gsap.fromTo('.landscape-img',
-    { yPercent: -10 },
+  // Hero image: scale up slightly on scroll (parallax feel)
+  gsap.fromTo('#heroImg',
+    { scale: 1.05 },
     {
-      yPercent: 10,
+      scale: 1.18,
       ease: 'none',
       scrollTrigger: {
-        trigger: '.landscape-panel',
-        start: 'top bottom',
+        trigger: '.hero',
+        start: 'top top',
         end: 'bottom top',
-        scrub: 1,
+        scrub: 1.5,
       },
     }
   );
 
-  // Floating badge subtle movement
-  gsap.to('.why-floating-badge', {
-    y: -10,
-    duration: 2.5,
-    ease: 'power1.inOut',
-    yoyo: true,
-    repeat: -1,
-  });
+  // Skip heavy scrub parallax on mobile — preserves performance
+  if (!isMobile) {
+    // Parallax for all parallax-img elements
+    gsap.utils.toArray('.parallax-img').forEach((img) => {
+      const wrap = img.closest('.parallax-wrap');
+      if (!wrap) return;
 
-  // About accent card float
-  gsap.to('.about-accent-card', {
-    y: -8,
-    duration: 3,
-    ease: 'power1.inOut',
-    yoyo: true,
-    repeat: -1,
-    delay: 0.5,
-  });
+      gsap.fromTo(img,
+        { yPercent: -8 },
+        {
+          yPercent: 8,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: wrap,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.2,
+          },
+        }
+      );
+    });
+
+    // Landscape parallax
+    gsap.fromTo('.landscape-img',
+      { yPercent: -10 },
+      {
+        yPercent: 10,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.landscape-panel',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      }
+    );
+
+    // Floating badge subtle movement
+    gsap.to('.why-floating-badge', {
+      y: -10,
+      duration: 2.5,
+      ease: 'power1.inOut',
+      yoyo: true,
+      repeat: -1,
+    });
+
+    // About accent card float
+    gsap.to('.about-accent-card', {
+      y: -8,
+      duration: 3,
+      ease: 'power1.inOut',
+      yoyo: true,
+      repeat: -1,
+      delay: 0.5,
+    });
+  }
 }
+
 
 /* ══════════════════════════════════════════
    SERVICE CARDS
@@ -555,8 +552,8 @@ function initMagneticButtons() {
 ══════════════════════════════════════════ */
 function initMouseParallax() {
   const hero = document.querySelector('.hero');
-  const heroBg = document.getElementById('heroBg');
-  if (!hero || !heroBg) return;
+  const heroImg = document.getElementById('heroImg');
+  if (!hero || !heroImg) return;
   if (window.matchMedia('(hover: none)').matches) return;
 
   hero.addEventListener('mousemove', (e) => {
@@ -564,16 +561,17 @@ function initMouseParallax() {
     const xRatio = (e.clientX - rect.left) / rect.width - 0.5;
     const yRatio = (e.clientY - rect.top) / rect.height - 0.5;
 
-    gsap.to(heroBg, {
-      x: xRatio * 20,
-      y: yRatio * 12,
+    // Move image within its container — slight translate, no overflow
+    gsap.to(heroImg, {
+      x: xRatio * 24,
+      y: yRatio * 14,
       duration: 1.2,
       ease: 'power2.out',
     });
   });
 
   hero.addEventListener('mouseleave', () => {
-    gsap.to(heroBg, {
+    gsap.to(heroImg, {
       x: 0,
       y: 0,
       duration: 1.5,
