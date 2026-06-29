@@ -15,17 +15,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
-  <!-- GSAP -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
-  <!-- Lenis Smooth Scroll -->
-  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
-
-  <!-- SplitType -->
-  <script src="https://unpkg.com/split-type@0.3.4/umd/index.min.js"></script>
+  <!-- GSAP & Libraries (Deferred for main thread optimization) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" defer></script>
+  <script src="https://unpkg.com/split-type@0.3.4/umd/index.min.js" defer></script>
 
   <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
 </head>
 
 <body>
@@ -575,7 +572,7 @@
   <!-- ═══════════════════ FOOTER ═══════════════════ -->
   <footer class="footer" role="contentinfo">
     <div class="footer-bg" aria-hidden="true">
-      <img src="images/hero.png" alt="" class="footer-bg-img" loading="lazy" />
+      <img src="images/hero.png" alt="" class="footer-bg-img" loading="lazy" decoding="async" />
     </div>
     <div class="footer-content">
       <div class="footer-top">
@@ -652,7 +649,5 @@
       </div>
     </div>
   </footer>
-
-  <script src="script.js"></script>
 </body>
 </html>

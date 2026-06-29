@@ -86,6 +86,9 @@ button { cursor: none; border: none; background: none; font: inherit; }
   z-index: 9999;
   transition: transform 0.15s var(--ease-smooth), opacity 0.2s;
   mix-blend-mode: multiply;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .cursor-follower {
@@ -99,35 +102,43 @@ button { cursor: none; border: none; background: none; font: inherit; }
   pointer-events: none;
   z-index: 9998;
   transition: transform 0.4s var(--ease-smooth), opacity 0.3s;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 body:has(a:hover) .cursor,
 body:has(button:hover) .cursor {
-  transform: scale(2.5);
+  transform: scale(2.5) translateZ(0);
 }
 
 body:has(a:hover) .cursor-follower,
 body:has(button:hover) .cursor-follower {
-  transform: scale(1.5);
+  transform: scale(1.5) translateZ(0);
   border-color: var(--accent);
 }
 
-/* ─── SCROLL PROGRESS ─── */
+/* ─── SCROLL PROGRESS (GPU Accelerated via scaleX instead of width reflow) ─── */
 .scroll-progress {
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
   height: 2px;
-  width: 0%;
   background: linear-gradient(90deg, var(--accent), #D4B87A);
   z-index: 9997;
-  transition: width 0.1s linear;
+  transform-origin: left center;
+  transform: scaleX(0) translateZ(0);
+  will-change: transform;
+  pointer-events: none;
 }
 
 /* ─── REVEAL UTILITIES ─── */
 .reveal-text {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(30px) translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 /* ─── SECTION LABELS ─── */
@@ -263,8 +274,16 @@ body:has(button:hover) .cursor-follower {
 .link-arrow svg { transition: transform 0.3s var(--ease-smooth); }
 
 /* ─── PARALLAX SETUP ─── */
-.parallax-wrap { overflow: hidden; }
-.parallax-img { will-change: transform; }
+.parallax-wrap {
+  overflow: hidden;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+.parallax-img {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
 
 /* ═══════════════════ NAVBAR ═══════════════════ */
 .navbar {
@@ -275,6 +294,8 @@ body:has(button:hover) .cursor-follower {
   z-index: 1000;
   padding: 0 var(--gutter);
   transition: background 0.4s var(--ease-smooth), backdrop-filter 0.4s, box-shadow 0.4s;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .navbar.scrolled {
@@ -1263,12 +1284,15 @@ body:has(button:hover) .cursor-follower {
 .marquee-track {
   display: flex;
   width: max-content;
+  will-change: transform;
+  transform: translate3d(0,0,0);
   animation: marqueeScroll 35s linear infinite;
+  backface-visibility: hidden;
 }
 
 @keyframes marqueeScroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
 }
 
 .marquee-track:hover { animation-play-state: paused; }

@@ -27,26 +27,30 @@ document.addEventListener('DOMContentLoaded', () => {
 /* ══════════════════════════════════════════
    LENIS SMOOTH SCROLL
 ══════════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   LENIS SMOOTH SCROLL
+══════════════════════════════════════════ */
 function initLenis() {
   const lenis = new Lenis({
-    duration: 1.4,
+    duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     direction: 'vertical',
     smooth: true,
     smoothTouch: false,
-    touchMultiplier: 2,
+    touchMultiplier: 1.5,
   });
 
-  // Connect Lenis to GSAP ScrollTrigger
+  // Synchronize ScrollTrigger with Lenis
   lenis.on('scroll', ScrollTrigger.update);
 
   gsap.ticker.add((time) => {
     lenis.raf(time * 1000);
   });
 
-  gsap.ticker.lagSmoothing(0);
+  // Optimized lag smoothing to prevent stutter while handling high refresh rate displays
+  gsap.ticker.lagSmoothing(500, 33);
 
-  // Store globally for access
+  // Store globally for unified scroll listener
   window._lenis = lenis;
 }
 
@@ -55,13 +59,11 @@ function initLenis() {
 ══════════════════════════════════════════ */
 function initGSAP() {
   gsap.registerPlugin(ScrollTrigger);
-
-  // Default ease
   gsap.defaults({ ease: 'power3.out' });
 }
 
 /* ══════════════════════════════════════════
-   CUSTOM CURSOR
+   CUSTOM CURSOR (IDLE-PAUSED RAF LOOP)
 ══════════════════════════════════════════ */
 function initCursor() {
   const cursor = document.getElementById('cursor');
@@ -74,70 +76,82 @@ function initCursor() {
     return;
   }
 
-  let mouseX = 0, mouseY = 0;
-  let followerX = 0, followerY = 0;
+  let mouseX = -100, mouseY = -100;
+  let followerX = -100, followerY = -100;
+  let isMoving = false;
+  let rafId = null;
+
+  function updateFollower() {
+    const dx = mouseX - followerX;
+    const dy = mouseY - followerY;
+
+    followerX += dx * 0.15;
+    followerY += dy * 0.15;
+
+    gsap.set(follower, { x: followerX, y: followerY });
+
+    // Pause loop when follower catches up to mouse to free main thread
+    if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
+      rafId = requestAnimationFrame(updateFollower);
+    } else {
+      isMoving = false;
+      rafId = null;
+    }
+  }
 
   document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
 
-    gsap.to(cursor, {
-      x: mouseX,
-      y: mouseY,
-      duration: 0.12,
-      ease: 'power2.out',
-    });
-  });
+    gsap.set(cursor, { x: mouseX, y: mouseY });
 
-  // Follower with lag
-  function animateFollower() {
-    followerX += (mouseX - followerX) * 0.1;
-    followerY += (mouseY - followerY) * 0.1;
-
-    gsap.set(follower, { x: followerX, y: followerY });
-    requestAnimationFrame(animateFollower);
-  }
-
-  animateFollower();
+    if (!isMoving) {
+      isMoving = true;
+      rafId = requestAnimationFrame(updateFollower);
+    }
+  }, { passive: true });
 
   // Hover states
-  const hoverElements = document.querySelectorAll(
-    'a, button, .service-card, .client-logo'
-  );
-
+  const hoverElements = document.querySelectorAll('a, button, .service-card, .client-logo');
   hoverElements.forEach((el) => {
     el.addEventListener('mouseenter', () => {
-      gsap.to(cursor, { scale: 2.5, duration: 0.3 });
-      gsap.to(follower, { scale: 1.5, borderColor: '#C6A66B', duration: 0.3 });
-    });
+      gsap.to(cursor, { scale: 2.5, duration: 0.2, overwrite: 'auto' });
+      gsap.to(follower, { scale: 1.5, borderColor: '#C6A66B', duration: 0.2, overwrite: 'auto' });
+    }, { passive: true });
 
     el.addEventListener('mouseleave', () => {
-      gsap.to(cursor, { scale: 1, duration: 0.3 });
-      gsap.to(follower, { scale: 1, borderColor: 'rgba(198,166,107,0.5)', duration: 0.3 });
-    });
+      gsap.to(cursor, { scale: 1, duration: 0.2, overwrite: 'auto' });
+      gsap.to(follower, { scale: 1, borderColor: 'rgba(198,166,107,0.5)', duration: 0.2, overwrite: 'auto' });
+    }, { passive: true });
   });
 }
 
 /* ══════════════════════════════════════════
-   NAVBAR
+   NAVBAR (UNIFIED LENIS SCROLL LISTENER)
 ══════════════════════════════════════════ */
 function initNavbar() {
   const navbar = document.getElementById('navbar');
   if (!navbar) return;
 
-  let lastScroll = 0;
+  let isScrolled = false;
 
-  window.addEventListener('scroll', () => {
-    const currentScroll = window.scrollY;
-
-    if (currentScroll > 60) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
+  const checkScroll = (scrollY) => {
+    const shouldBeScrolled = scrollY > 60;
+    if (shouldBeScrolled !== isScrolled) {
+      isScrolled = shouldBeScrolled;
+      if (isScrolled) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
     }
+  };
 
-    lastScroll = currentScroll;
-  }, { passive: true });
+  if (window._lenis) {
+    window._lenis.on('scroll', (e) => checkScroll(e.scroll));
+  } else {
+    window.addEventListener('scroll', () => checkScroll(window.scrollY), { passive: true });
+  }
 
   // Animate navbar in
   gsap.to([
@@ -148,9 +162,9 @@ function initNavbar() {
     opacity: 1,
     y: 0,
     duration: 1,
-    stagger: 0.12,
+    stagger: 0.1,
     ease: 'power3.out',
-    delay: 0.8,
+    delay: 0.6,
   });
 }
 
@@ -516,39 +530,48 @@ function initCounters() {
 }
 
 /* ══════════════════════════════════════════
-   MAGNETIC BUTTONS
+   MAGNETIC BUTTONS (CACHED RECT, ZERO REFLOW)
 ══════════════════════════════════════════ */
 function initMagneticButtons() {
   const magnetics = document.querySelectorAll('.magnetic');
   if (window.matchMedia('(hover: none)').matches) return;
 
   magnetics.forEach((btn) => {
+    let rect = null;
+
+    btn.addEventListener('mouseenter', () => {
+      rect = btn.getBoundingClientRect();
+    }, { passive: true });
+
     btn.addEventListener('mousemove', (e) => {
-      const rect = btn.getBoundingClientRect();
+      if (!rect) rect = btn.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;
       const y = e.clientY - rect.top - rect.height / 2;
 
       gsap.to(btn, {
         x: x * 0.35,
         y: y * 0.35,
-        duration: 0.4,
+        duration: 0.3,
         ease: 'power2.out',
+        overwrite: 'auto',
       });
-    });
+    }, { passive: true });
 
     btn.addEventListener('mouseleave', () => {
+      rect = null;
       gsap.to(btn, {
         x: 0,
         y: 0,
-        duration: 0.6,
+        duration: 0.5,
         ease: 'elastic.out(1, 0.5)',
+        overwrite: 'auto',
       });
-    });
+    }, { passive: true });
   });
 }
 
 /* ══════════════════════════════════════════
-   MOUSE PARALLAX ON HERO
+   MOUSE PARALLAX ON HERO (RAF THROTTLED)
 ══════════════════════════════════════════ */
 function initMouseParallax() {
   const hero = document.querySelector('.hero');
@@ -556,61 +579,95 @@ function initMouseParallax() {
   if (!hero || !heroImg) return;
   if (window.matchMedia('(hover: none)').matches) return;
 
-  hero.addEventListener('mousemove', (e) => {
-    const rect = hero.getBoundingClientRect();
-    const xRatio = (e.clientX - rect.left) / rect.width - 0.5;
-    const yRatio = (e.clientY - rect.top) / rect.height - 0.5;
+  let rect = null;
+  let ticking = false;
 
-    // Move image within its container — slight translate, no overflow
-    gsap.to(heroImg, {
-      x: xRatio * 24,
-      y: yRatio * 14,
-      duration: 1.2,
-      ease: 'power2.out',
+  hero.addEventListener('mouseenter', () => {
+    rect = hero.getBoundingClientRect();
+  }, { passive: true });
+
+  hero.addEventListener('mousemove', (e) => {
+    if (ticking) return;
+    ticking = true;
+
+    requestAnimationFrame(() => {
+      if (!rect) rect = hero.getBoundingClientRect();
+      const xRatio = (e.clientX - rect.left) / rect.width - 0.5;
+      const yRatio = (e.clientY - rect.top) / rect.height - 0.5;
+
+      gsap.to(heroImg, {
+        x: xRatio * 24,
+        y: yRatio * 14,
+        duration: 1.2,
+        ease: 'power2.out',
+        overwrite: 'auto',
+      });
+      ticking = false;
     });
-  });
+  }, { passive: true });
 
   hero.addEventListener('mouseleave', () => {
+    rect = null;
     gsap.to(heroImg, {
       x: 0,
       y: 0,
       duration: 1.5,
       ease: 'power2.out',
+      overwrite: 'auto',
     });
-  });
+  }, { passive: true });
 }
 
 /* ══════════════════════════════════════════
-   SCROLL PROGRESS BAR
+   SCROLL PROGRESS BAR (GPU TRANSFORM scaleX)
 ══════════════════════════════════════════ */
 function initScrollProgress() {
   const bar = document.getElementById('scrollProgress');
   if (!bar) return;
 
-  window.addEventListener('scroll', () => {
-    const scrolled = window.scrollY;
-    const max = document.body.scrollHeight - window.innerHeight;
-    const pct = (scrolled / max) * 100;
-    bar.style.width = `${pct}%`;
-  }, { passive: true });
+  let maxScroll = 1;
+
+  const updateMaxScroll = () => {
+    maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+  };
+
+  updateMaxScroll();
+  window.addEventListener('resize', updateMaxScroll, { passive: true });
+
+  const updateProgress = (scrollY, progress) => {
+    const p = progress !== undefined ? progress : Math.min(1, Math.max(0, scrollY / maxScroll));
+    bar.style.transform = `scaleX(${p}) translateZ(0)`;
+  };
+
+  if (window._lenis) {
+    window._lenis.on('scroll', (e) => updateProgress(e.scroll, e.progress));
+  } else {
+    window.addEventListener('scroll', () => updateProgress(window.scrollY), { passive: true });
+  }
 }
 
 /* ══════════════════════════════════════════
-   ACTIVE SECTION OBSERVER
+   ACTIVE SECTION OBSERVER (CACHED DOM)
 ══════════════════════════════════════════ */
 function initSectionObserver() {
   const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
+  const navLinks = Array.from(document.querySelectorAll('.nav-link'));
+  let currentActive = null;
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        navLinks.forEach((link) => {
-          link.classList.remove('active');
-          if (link.getAttribute('data-section') === entry.target.id) {
-            link.classList.add('active');
-          }
-        });
+        const id = entry.target.id;
+        if (currentActive !== id) {
+          currentActive = id;
+          navLinks.forEach((link) => {
+            if (link.getAttribute('data-section') === id) {
+              link.classList.add('active');
+            } else {
+              link.classList.remove('active');
+            }
+          });
+        }
       }
     });
   }, { threshold: 0.3 });
