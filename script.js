@@ -7,7 +7,8 @@
 
 /* ─── WAIT FOR DOM ─── */
 document.addEventListener('DOMContentLoaded', () => {
-  const canAnimate = initGSAP();
+  const canAnimate = !prefersReducedMotion() && initGSAP();
+  initHeroVideo();
 
   if (canAnimate) {
     initLenis();
@@ -24,6 +25,52 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initSectionObserver();
 });
+
+function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function initHeroVideo() {
+  const video = document.getElementById('heroVideo');
+  if (!video) return;
+  const cinematicRate = 0.75;
+  const freezeOffset = 0.45;
+  let hasFrozenAtEnd = false;
+
+  video.muted = true;
+  video.defaultMuted = true;
+  video.loop = false;
+  video.defaultPlaybackRate = cinematicRate;
+  video.playbackRate = cinematicRate;
+
+  video.addEventListener('loadedmetadata', () => {
+    video.defaultPlaybackRate = cinematicRate;
+    video.playbackRate = cinematicRate;
+  }, { once: true });
+
+  const freezeAtEnd = () => {
+    if (hasFrozenAtEnd || !Number.isFinite(video.duration) || video.duration <= 0) return;
+    if (video.currentTime < video.duration - freezeOffset) return;
+
+    hasFrozenAtEnd = true;
+    video.pause();
+    video.setAttribute('data-playback', 'ended');
+  };
+
+  video.addEventListener('timeupdate', freezeAtEnd);
+  video.addEventListener('ended', () => {
+    hasFrozenAtEnd = true;
+    video.pause();
+    video.setAttribute('data-playback', 'ended');
+  }, { once: true });
+
+  const playPromise = video.play();
+  if (playPromise && typeof playPromise.catch === 'function') {
+    playPromise.catch(() => {
+      video.setAttribute('data-playback', 'poster');
+    });
+  }
+}
 
 /* ══════════════════════════════════════════
    LENIS SMOOTH SCROLL
@@ -122,6 +169,13 @@ function initMobileMenu() {
   const mobileMenu = document.getElementById('mobileMenu');
   if (!hamburger || !mobileMenu) return;
 
+  const closeMenu = () => {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+  };
+
   hamburger.addEventListener('click', () => {
     const isOpen = hamburger.classList.toggle('open');
     mobileMenu.classList.toggle('open');
@@ -131,12 +185,11 @@ function initMobileMenu() {
 
   // Close on link click
   mobileMenu.querySelectorAll('.mobile-link').forEach((link) => {
-    link.addEventListener('click', () => {
-      hamburger.classList.remove('open');
-      mobileMenu.classList.remove('open');
-      hamburger.setAttribute('aria-expanded', 'false');
-      mobileMenu.setAttribute('aria-hidden', 'true');
-    });
+    link.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeMenu();
   });
 }
 
@@ -151,7 +204,7 @@ function initHeroAnimations() {
     y: 20,
   }, {
     y: 0,
-    duration: 0.9,
+    duration: 0.65,
     ease: 'power3.out',
   });
 
@@ -160,28 +213,28 @@ function initHeroAnimations() {
     y: 40,
   }, {
     y: 0,
-    duration: 1,
+    duration: 0.85,
     stagger: 0.15,
     ease: 'power3.out',
-  }, '-=0.5');
+  }, '-=0.35');
 
   // Subtitle
   tl.fromTo('#heroSubtitle', {
     y: 20,
   }, {
     y: 0,
-    duration: 0.9,
+    duration: 0.7,
     ease: 'power3.out',
-  }, '-=0.5');
+  }, '-=0.35');
 
   // Actions
   tl.fromTo('#heroActions', {
     y: 20,
   }, {
     y: 0,
-    duration: 0.8,
+    duration: 0.65,
     ease: 'power3.out',
-  }, '-=0.5');
+  }, '-=0.3');
 
   // Scroll indicator
   tl.fromTo('#scrollIndicator', {
@@ -199,10 +252,9 @@ function initHeroAnimations() {
     duration: 0.8,
   }, '-=0.5');
 
-  // Hero image: subtle scale-in on load
-  gsap.fromTo('#heroImg',
-    { scale: 1.1 },
-    { scale: 1.05, duration: 1.8, ease: 'power2.out', delay: 0 }
+  gsap.fromTo('#heroVideo',
+    { opacity: 0.96 },
+    { opacity: 1, duration: 1.2, ease: 'power2.out', delay: 0 }
   );
 }
 
@@ -212,6 +264,8 @@ function initHeroAnimations() {
 function initScrollAnimations() {
   // Generic reveal
   gsap.utils.toArray('.reveal-text').forEach((el) => {
+    if (el.closest('.editorial-block') || el.classList.contains('why-item')) return;
+
     gsap.fromTo(el,
       { opacity: 0, y: 30 },
       {
@@ -230,10 +284,11 @@ function initScrollAnimations() {
 
   // About image reveal
   gsap.fromTo('.about-img-wrap', 
-    { opacity: 0, x: 50 },
+    { opacity: 0, x: 36, scale: 0.98 },
     {
       opacity: 1,
       x: 0,
+      scale: 1,
       duration: 1.1,
       ease: 'power3.out',
       scrollTrigger: {
@@ -246,16 +301,93 @@ function initScrollAnimations() {
 
   // Accent card
   gsap.fromTo('.about-accent-card',
-    { opacity: 0, y: 30 },
+    { opacity: 0, y: 24, scale: 0.96 },
     {
       opacity: 1,
       y: 0,
+      scale: 1,
       duration: 0.8,
       delay: 0.4,
       ease: 'back.out(1.7)',
       scrollTrigger: {
         trigger: '.about-image-col',
         start: 'top 75%',
+        once: true,
+      },
+    }
+  );
+
+  // Editorial project blocks
+  gsap.utils.toArray('.editorial-block').forEach((block) => {
+    const image = block.querySelector('.editorial-img-wrap');
+    const captionNumber = block.querySelector('.caption-num');
+    const textItems = block.querySelectorAll('.editorial-text .reveal-text');
+
+    if (image) {
+      gsap.fromTo(image,
+        { opacity: 0, y: 42, scale: 0.97 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: block,
+            start: 'top 78%',
+            once: true,
+          },
+        }
+      );
+    }
+
+    if (captionNumber) {
+      gsap.fromTo(captionNumber,
+        { opacity: 0, y: 10 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.65,
+          delay: 0.25,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: block,
+            start: 'top 78%',
+            once: true,
+          },
+        }
+      );
+    }
+
+    if (textItems.length) {
+      gsap.fromTo(textItems,
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.08,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: block,
+            start: 'top 76%',
+            once: true,
+          },
+        }
+      );
+    }
+  });
+
+  gsap.fromTo('.landscape-img-wrap',
+    { opacity: 0, scale: 1.03 },
+    {
+      opacity: 1,
+      scale: 1,
+      duration: 1.1,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '.landscape-panel',
+        start: 'top 82%',
         once: true,
       },
     }
@@ -281,7 +413,7 @@ function initScrollAnimations() {
   // Why items
   gsap.utils.toArray('.why-item').forEach((item, i) => {
     gsap.fromTo(item,
-      { opacity: 0, x: 30 },
+      { opacity: 0, x: 24 },
       {
         opacity: 1,
         x: 0,
@@ -304,25 +436,10 @@ function initScrollAnimations() {
 ══════════════════════════════════════════ */
 function initParallax() {
   const shouldSkipParallax = window.matchMedia(
-    '(max-width: 768px), (prefers-reduced-motion: reduce)'
+    '(max-width: 900px), (prefers-reduced-motion: reduce)'
   ).matches;
 
   if (shouldSkipParallax) return;
-
-  // Hero image: scale up slightly on scroll (parallax feel)
-  gsap.fromTo('#heroImg',
-    { scale: 1.05 },
-    {
-      scale: 1.18,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.hero',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1.5,
-      },
-    }
-  );
 
   // Parallax for all parallax-img elements
   gsap.utils.toArray('.parallax-img').forEach((img) => {
@@ -385,11 +502,14 @@ function initParallax() {
 ══════════════════════════════════════════ */
 function initServiceCards() {
   gsap.utils.toArray('.service-card').forEach((card, i) => {
+    const cardNumber = card.querySelector('.card-num');
+
     gsap.fromTo(card,
-      { opacity: 0, y: 40 },
+      { opacity: 0, y: 36, scale: 0.98 },
       {
         opacity: 1,
         y: 0,
+        scale: 1,
         duration: 0.7,
         delay: (i % 3) * 0.1,
         ease: 'power3.out',
@@ -400,6 +520,24 @@ function initServiceCards() {
         },
       }
     );
+
+    if (cardNumber) {
+      gsap.fromTo(cardNumber,
+        { opacity: 0, y: -8 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          delay: 0.15 + (i % 3) * 0.1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 88%',
+            once: true,
+          },
+        }
+      );
+    }
   });
 }
 
@@ -493,8 +631,10 @@ function initSectionObserver() {
           navLinks.forEach((link) => {
             if (link.getAttribute('data-section') === id) {
               link.classList.add('active');
+              link.setAttribute('aria-current', 'page');
             } else {
               link.classList.remove('active');
+              link.removeAttribute('aria-current');
             }
           });
         }
@@ -532,6 +672,7 @@ function initContactForm(canAnimate = false) {
     const btnText = btn.querySelector('.btn-text');
 
     // Animate button
+    btn.disabled = true;
     btnText.textContent = 'Enviando...';
     if (canAnimate) {
       gsap.to(btn, { scale: 0.96, duration: 0.15 });
@@ -557,6 +698,7 @@ function initContactForm(canAnimate = false) {
       form.reset();
 
       setTimeout(() => {
+        btn.disabled = false;
         btnText.textContent = 'Enviar Mensagem';
         if (success) success.classList.remove('visible');
       }, 5000);

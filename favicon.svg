@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Thais Arquitetura">
+  <rect width="64" height="64" rx="10" fill="#111111"/>
+  <path d="M13 16h38v5H35v27h-6V21H13z" fill="#C6A66B"/>
+  <path d="M19 49h26" stroke="#F8F7F5" stroke-width="2" stroke-linecap="round"/>
+</svg>
