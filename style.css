@@ -3,9 +3,6 @@
    World-class architecture studio website
    ═══════════════════════════════════════════════════════════ */
 
-/* ─── FONTS ─── */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap');
-
 /* ─── TOKENS ─── */
 :root {
   --bg: #F8F7F5;
@@ -55,7 +52,6 @@ body {
   color: var(--dark);
   line-height: 1.6;
   overflow-x: hidden;
-  cursor: none;
 }
 
 img {
@@ -71,52 +67,7 @@ a {
 }
 
 ul { list-style: none; }
-button { cursor: none; border: none; background: none; font: inherit; }
-
-/* ─── CUSTOM CURSOR ─── */
-.cursor {
-  position: fixed;
-  top: -6px;
-  left: -6px;
-  width: 12px;
-  height: 12px;
-  background: var(--accent);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transition: transform 0.15s var(--ease-smooth), opacity 0.2s;
-  mix-blend-mode: multiply;
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-.cursor-follower {
-  position: fixed;
-  top: -20px;
-  left: -20px;
-  width: 40px;
-  height: 40px;
-  border: 1px solid rgba(198,166,107,0.5);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  transition: transform 0.4s var(--ease-smooth), opacity 0.3s;
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-body:has(a:hover) .cursor,
-body:has(button:hover) .cursor {
-  transform: scale(2.5) translateZ(0);
-}
-
-body:has(a:hover) .cursor-follower,
-body:has(button:hover) .cursor-follower {
-  transform: scale(1.5) translateZ(0);
-  border-color: var(--accent);
-}
+button { cursor: pointer; border: none; background: none; font: inherit; }
 
 /* ─── SCROLL PROGRESS (GPU Accelerated via scaleX instead of width reflow) ─── */
 .scroll-progress {
@@ -135,8 +86,6 @@ body:has(button:hover) .cursor-follower {
 
 /* ─── REVEAL UTILITIES ─── */
 .reveal-text {
-  opacity: 0;
-  transform: translateY(30px) translateZ(0);
   will-change: transform, opacity;
   backface-visibility: hidden;
 }
@@ -280,9 +229,15 @@ body:has(button:hover) .cursor-follower {
   backface-visibility: hidden;
 }
 .parallax-img {
-  will-change: transform;
   transform: translateZ(0);
   backface-visibility: hidden;
+}
+
+@media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
+  .parallax-img,
+  .hero-img {
+    will-change: transform;
+  }
 }
 
 /* ═══════════════════ NAVBAR ═══════════════════ */
@@ -320,7 +275,6 @@ body:has(button:hover) .cursor-follower {
   flex-direction: column;
   line-height: 1;
   gap: 1px;
-  opacity: 0;
 }
 
 .logo-text {
@@ -349,7 +303,6 @@ body:has(button:hover) .cursor-follower {
   display: flex;
   align-items: center;
   gap: 40px;
-  opacity: 0;
 }
 
 .nav-link {
@@ -398,7 +351,6 @@ body:has(button:hover) .cursor-follower {
   letter-spacing: 0.08em;
   color: var(--white);
   transition: all 0.3s var(--ease-smooth);
-  opacity: 0;
   white-space: nowrap;
 }
 
@@ -492,6 +444,12 @@ body:has(button:hover) .cursor-follower {
   overflow: hidden;
 }
 
+.hero-picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
 .hero-img {
   position: absolute;
   inset: 0;
@@ -500,7 +458,6 @@ body:has(button:hover) .cursor-follower {
   object-fit: cover;
   object-position: center center;
   transform-origin: center center;
-  will-change: transform;
 }
 
 .hero-overlay {
@@ -519,6 +476,7 @@ body:has(button:hover) .cursor-follower {
   z-index: 2;
   text-align: center;
   padding: 0 var(--gutter);
+  width: 100%;
   max-width: 900px;
 }
 
@@ -530,8 +488,6 @@ body:has(button:hover) .cursor-follower {
   text-transform: uppercase;
   color: var(--accent);
   margin-bottom: 28px;
-  opacity: 0;
-  transform: translateY(20px);
 }
 
 .hero-title {
@@ -545,8 +501,6 @@ body:has(button:hover) .cursor-follower {
 
 .title-line {
   display: block;
-  opacity: 0;
-  transform: translateY(40px);
 }
 
 .title-italic {
@@ -562,8 +516,6 @@ body:has(button:hover) .cursor-follower {
   line-height: 1.7;
   color: rgba(255,255,255,0.75);
   margin-bottom: 48px;
-  opacity: 0;
-  transform: translateY(20px);
 }
 
 .hero-actions {
@@ -572,8 +524,6 @@ body:has(button:hover) .cursor-follower {
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
-  opacity: 0;
-  transform: translateY(20px);
 }
 
 /* Hero Meta */
@@ -593,7 +543,6 @@ body:has(button:hover) .cursor-follower {
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  opacity: 0;
 }
 
 .scroll-line {
@@ -622,7 +571,6 @@ body:has(button:hover) .cursor-follower {
   display: flex;
   align-items: center;
   gap: 28px;
-  opacity: 0;
   background: rgba(255,255,255,0.06);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255,255,255,0.1);
@@ -934,8 +882,6 @@ body:has(button:hover) .cursor-follower {
   border-radius: var(--radius-md);
   transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s, border-color 0.4s;
   overflow: hidden;
-  opacity: 0;
-  transform: translateY(40px);
 }
 
 .service-card::before {
@@ -1103,8 +1049,6 @@ body:has(button:hover) .cursor-follower {
   text-align: center;
   position: relative;
   overflow: hidden;
-  opacity: 0;
-  transform: translateY(30px);
 }
 
 .stat-card::before {
@@ -1652,13 +1596,6 @@ body:has(button:hover) .cursor-follower {
 
 /* ─── MOBILE ─── */
 @media (max-width: 768px) {
-  /* ---------- Cursor / interactions ---------- */
-  .cursor,
-  .cursor-follower { display: none !important; }
-  body  { cursor: auto; }
-  button { cursor: pointer; }
-  a { cursor: pointer; }
-
   /* ---------- Navbar ---------- */
   .nav-links,
   .nav-cta { display: none; }
@@ -1674,27 +1611,36 @@ body:has(button:hover) .cursor-follower {
 
   .hero-content {
     padding: 0 20px;
+    max-width: 100%;
     margin-top: -40px; /* optical center with meta bar */
   }
 
   .hero-label { font-size: 10px; margin-bottom: 18px; }
 
   .hero-title {
-    font-size: clamp(38px, 10vw, 64px);
+    font-size: clamp(32px, 8.8vw, 54px);
     margin-bottom: 20px;
   }
+
+  .title-line { white-space: normal; }
 
   .hero-subtitle {
     font-size: 14px;
     line-height: 1.65;
     margin-bottom: 36px;
-    br { display: none; } /* collapse line break on mobile */
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
   }
+
+  .hero-subtitle br { display: none; }
 
   .hero-actions {
     flex-direction: column;
     align-items: stretch;
     gap: 12px;
+    width: min(100%, 340px);
+    margin: 0 auto;
   }
 
   .btn-primary,
@@ -1964,5 +1910,3 @@ body:has(button:hover) .cursor-follower {
   .marquee-track { animation: none; }
   .scroll-line { animation: none; }
 }
-
-
