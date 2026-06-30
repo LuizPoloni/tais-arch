@@ -121,6 +121,58 @@ section[id] {
   pointer-events: none;
 }
 
+.whatsapp-float {
+  position: fixed;
+  right: clamp(18px, 2.4vw, 32px);
+  bottom: max(24px, calc(env(safe-area-inset-bottom) + 18px));
+  z-index: 9996;
+  width: 54px;
+  height: 54px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  background: rgba(17,17,17,0.82);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 50%;
+  box-shadow: 0 18px 44px rgba(0,0,0,0.22);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transform: translateZ(0);
+  transition: color 0.28s var(--ease-smooth), background 0.28s var(--ease-smooth),
+    border-color 0.28s var(--ease-smooth), box-shadow 0.28s var(--ease-smooth),
+    transform 0.28s var(--ease-out-expo);
+}
+
+.whatsapp-float::after {
+  content: '';
+  position: absolute;
+  right: 11px;
+  bottom: 11px;
+  width: 7px;
+  height: 7px;
+  background: #25D366;
+  border: 2px solid var(--dark);
+  border-radius: 50%;
+}
+
+.whatsapp-float svg {
+  width: 22px;
+  height: 22px;
+}
+
+.whatsapp-float:hover {
+  color: #25D366;
+  background: rgba(17,17,17,0.92);
+  border-color: rgba(37,211,102,0.35);
+  box-shadow: 0 20px 54px rgba(0,0,0,0.28);
+  transform: translateY(-3px) translateZ(0);
+}
+
+.whatsapp-float:active {
+  transform: translateY(-1px) scale(0.98) translateZ(0);
+}
+
 /* ─── REVEAL UTILITIES ─── */
 .reveal-text {
   will-change: transform, opacity;
@@ -1975,6 +2027,13 @@ section[id] {
     font-size: 12px;
   }
 
+  .whatsapp-float {
+    right: 18px;
+    bottom: max(18px, calc(env(safe-area-inset-bottom) + 14px));
+    width: 50px;
+    height: 50px;
+  }
+
   /* ---------- Footer ---------- */
   .footer-top {
     grid-template-columns: 1fr;
@@ -2052,7 +2111,8 @@ section[id] {
   .service-card:hover,
   .editorial-img-wrap:hover,
   .why-item:hover,
-  .stat-card:hover {
+  .stat-card:hover,
+  .whatsapp-float:hover {
     transform: none !important;
   }
 }
