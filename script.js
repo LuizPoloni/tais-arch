@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   THAIS ARQUITETURA — Premium JavaScript
+   TAIS ARQUITETURA — Premium JavaScript
    GSAP + ScrollTrigger + Lenis
    ═══════════════════════════════════════════════════════════ */
 
@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
     initParallax();
     initServiceCards();
-    initCounters();
   }
 
   initNavbar(canAnimate);
@@ -33,7 +32,9 @@ function prefersReducedMotion() {
 function initHeroVideo() {
   const video = document.getElementById('heroVideo');
   if (!video) return;
-  const cinematicRate = 0.75;
+  // Preserve the source's native 24 fps cadence. Slowing a 24 fps video in the
+  // browser makes frame changes visibly uneven because no new frames are created.
+  const cinematicRate = 1;
   const freezeOffset = 0.45;
   let hasFrozenAtEnd = false;
 
@@ -538,51 +539,6 @@ function initServiceCards() {
         }
       );
     }
-  });
-}
-
-/* ══════════════════════════════════════════
-   ANIMATED COUNTERS
-══════════════════════════════════════════ */
-function initCounters() {
-  const statCards = document.querySelectorAll('.stat-card');
-
-  gsap.fromTo(statCards,
-    { opacity: 0, y: 30 },
-    {
-      opacity: 1,
-      y: 0,
-      duration: 0.7,
-      stagger: 0.12,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: '.stats-section',
-        start: 'top 80%',
-        once: true,
-      },
-    }
-  );
-
-  document.querySelectorAll('.stat-counter').forEach((counter) => {
-    const target = parseInt(counter.getAttribute('data-target'), 10);
-
-    ScrollTrigger.create({
-      trigger: counter,
-      start: 'top 80%',
-      once: true,
-      onEnter: () => {
-        const obj = { val: 0 };
-        counter.textContent = '0';
-        gsap.to(obj, {
-          val: target,
-          duration: 2,
-          ease: 'power2.out',
-          onUpdate: () => {
-            counter.textContent = Math.floor(obj.val);
-          },
-        });
-      },
-    });
   });
 }
 
