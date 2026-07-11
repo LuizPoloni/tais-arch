@@ -7,12 +7,12 @@
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="theme-color" content="#111111" />
     <meta name="description"
-        content="Thais Arquitetura é um escritório de arquitetura em Cuiabá especializado em arquitetura de alto padrão, projetos residenciais premium e design de interiores personalizados." />
+        content="Tais Arquitetura é um escritório de arquitetura em Cuiabá especializado em arquitetura de alto padrão, projetos residenciais premium e design de interiores personalizados." />
     <meta name="keywords"
         content="arquiteta em Cuiabá, arquitetura de alto padrão, projetos residenciais em Cuiabá, design de interiores em Cuiabá, escritório de arquitetura em Cuiabá, arquitetura residencial premium, projetos arquitetônicos personalizados" />
     <link rel="canonical" href="https://luizpoloni.github.io/tais-arch/" />
 
-    <meta property="og:title" content="Thais Arquitetura | Arquitetura de Alto Padrão em Cuiabá" />
+    <meta property="og:title" content="Tais Arquitetura | Arquitetura de Alto Padrão em Cuiabá" />
     <meta property="og:description"
         content="Projetos residenciais, comerciais e interiores de luxo em Cuiabá, com arquitetura personalizada, estética premium e gestão completa do conceito à obra." />
     <meta property="og:type" content="website" />
@@ -20,13 +20,13 @@
     <meta property="og:image" content="https://luizpoloni.github.io/tais-arch/images/hero-1600.webp" />
     <meta property="og:image:alt" content="Villa moderna de alto padrão com piscina infinita" />
     <meta property="og:locale" content="pt_BR" />
-    <meta property="og:site_name" content="Thais Arquitetura" />
+    <meta property="og:site_name" content="Tais Arquitetura" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Thais Arquitetura | Arquitetura de Alto Padrão em Cuiabá" />
+    <meta name="twitter:title" content="Tais Arquitetura | Arquitetura de Alto Padrão em Cuiabá" />
     <meta name="twitter:description"
         content="Escritório de arquitetura em Cuiabá para projetos residenciais premium, interiores de luxo e arquitetura personalizada." />
     <meta name="twitter:image" content="https://luizpoloni.github.io/tais-arch/images/hero-1600.webp" />
-    <title>Thais Arquitetura | Arquiteta em Cuiabá e Arquitetura de Alto Padrão</title>
+    <title>Tais Arquitetura | Arquiteta em Cuiabá e Arquitetura de Alto Padrão</title>
 
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="manifest" href="site.webmanifest" />
@@ -52,19 +52,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
     <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" defer></script>
 
-    <link rel="stylesheet" href="style.min.css" />
-    <script src="script.min.js" defer></script>
+    <link rel="stylesheet" href="style.css?v=20260711" />
+    <script src="script.js?v=20260711" defer></script>
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
             "@type": ["ProfessionalService", "LocalBusiness"],
             "@id": "https://luizpoloni.github.io/tais-arch/#studio",
-            "name": "Thais Arquitetura",
+            "name": "Tais Arquitetura",
             "url": "https://luizpoloni.github.io/tais-arch/",
             "image": "https://luizpoloni.github.io/tais-arch/images/hero-1600.webp",
             "description": "Escritório de arquitetura em Cuiabá especializado em arquitetura de alto padrão, projetos residenciais premium, arquitetura comercial, design de interiores e paisagismo.",
             "telephone": "+55-65-99306-3676",
-            "email": "contato@thaisarquitetura.com.br",
+            "email": "contato@taisarquitetura.com.br",
             "address": {
                 "@type": "PostalAddress",
                 "addressLocality": "Cuiabá",
@@ -136,19 +136,21 @@
     <!-- ═══════════════════ NAVBAR ═══════════════════ -->
     <nav class="navbar" id="navbar" role="navigation" aria-label="Navegação principal">
         <div class="nav-container">
-            <a href="#home" class="nav-logo" id="navLogo" aria-label="Thais Arquitetura — Início">
-                <span class="logo-text">THAIS</span>
+            <a href="#home" class="nav-logo" id="navLogo" aria-label="Tais Arquitetura — Início">
+                <span class="logo-text">TAIS</span>
                 <span class="logo-sub">ARQUITETURA</span>
             </a>
 
             <ul class="nav-links" role="list">
-                <li><a href="#home" class="nav-link active" data-section="home" aria-current="page">Home</a></li>
+                <li><a href="#sobre" class="nav-link" data-section="sobre">O Estúdio</a></li>
+                <li><a href="#portfolio" class="nav-link" data-section="portfolio">Projetos</a></li>
                 <li><a href="#servicos" class="nav-link" data-section="servicos">Serviços</a></li>
+                <li><a href="#diferenciais" class="nav-link" data-section="diferenciais">Diferenciais</a></li>
                 <li><a href="#contato" class="nav-link" data-section="contato">Contato</a></li>
             </ul>
 
-            <a href="#contato" class="nav-cta" id="navCta" aria-label="Iniciar projeto">
-                <span>Iniciar Projeto</span>
+            <a href="#contato" class="nav-cta" id="navCta" aria-label="Solicitar atendimento">
+                <span>Solicitar Atendimento</span>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                     <path d="M1 7H13M7 1L13 7L7 13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"
                         stroke-linejoin="round" />
@@ -163,8 +165,10 @@
         <!-- Mobile Menu -->
         <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
             <ul role="list">
-                <li><a href="#home" class="mobile-link">Home</a></li>
+                <li><a href="#sobre" class="mobile-link">O Estúdio</a></li>
+                <li><a href="#portfolio" class="mobile-link">Projetos</a></li>
                 <li><a href="#servicos" class="mobile-link">Serviços</a></li>
+                <li><a href="#diferenciais" class="mobile-link">Diferenciais</a></li>
                 <li><a href="#contato" class="mobile-link">Contato</a></li>
             </ul>
         </div>
@@ -172,7 +176,7 @@
 
     <main id="conteudo">
         <!-- ═══════════════════ HERO ═══════════════════ -->
-        <section class="hero" id="home" aria-label="Hero — Thais Arquitetura">
+        <section class="hero" id="home" aria-label="Hero — Tais Arquitetura">
             <div class="hero-bg" id="heroBg">
                 <video class="hero-video hero-media" id="heroVideo" autoplay muted playsinline webkit-playsinline
                     preload="auto" poster="images/hero-1600.webp"
@@ -185,26 +189,26 @@
             </div>
 
             <div class="hero-content">
-                <p class="hero-label" id="heroLabel">Arquitetura de Alto Padrão</p>
+                <p class="hero-label" id="heroLabel">Tais Arquitetura · Cuiabá, MT</p>
 
                 <h1 class="hero-title" id="heroTitle">
-                    <span class="title-line title-main"><span>Criamos</span> <span>Espaços</span></span>
-                    <span class="title-line title-italic">Que Inspiram.</span>
+                    <span class="title-line title-main"><span>Arquitetura</span> <span>com</span></span>
+                    <span class="title-line title-italic">identidade.</span>
                 </h1>
 
                 <p class="hero-subtitle" id="heroSubtitle">
-                    Do conceito à obra — projetos únicos que traduzem <br />sua visão em espaços extraordinários,
+                    Projetos residenciais, comerciais e interiores desenvolvidos<br />com rigor técnico, sensibilidade e propósito.
                 </p>
 
                 <div class="hero-actions" id="heroActions">
                     <a href="#portfolio" class="btn-primary" id="heroCta" aria-label="Ver nossos projetos">
-                        <span>Explorar Projetos</span>
+                        <span>Conhecer Projetos</span>
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                             <path d="M1 9H17M9 1L17 9L9 17" stroke="currentColor" stroke-width="1.5"
                                 stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </a>
-                    <a href="#sobre" class="btn-ghost" id="heroAbout" aria-label="Sobre o estúdio">Nossa História</a>
+                    <a href="#sobre" class="btn-ghost" id="heroAbout" aria-label="Conhecer o estúdio">Conheça o Estúdio</a>
                 </div>
             </div>
 
@@ -236,21 +240,18 @@
         <section class="about-section" id="sobre" aria-label="Sobre o estúdio">
             <div class="about-grid">
                 <div class="about-text-col">
-                    <p class="section-label reveal-text">Nosso Estúdio</p>
+                    <p class="section-label reveal-text">Quem Somos</p>
                     <h2 class="section-title reveal-text">
-                        Arquitetura<br /><em>como arte.</em>
+                        Projetamos espaços<br /><em>para viver melhor.</em>
                     </h2>
                     <p class="about-body reveal-text">
-                        Fundado com a missão de redefinir padrões, o Estúdio Thais Arquitetura une funcionalidade e
-                        beleza
-                        em cada projeto. Cada espaço que criamos carrega uma identidade única — pensada para durar
-                        décadas e
-                        inspirar gerações.
+                        A Tais Arquitetura é um escritório sediado em Cuiabá, dedicado a criar espaços que unem
+                        estética, funcionalidade e identidade. Cada projeto nasce de uma escuta próxima e transforma
+                        necessidades reais em soluções autorais e duradouras.
                     </p>
                     <p class="about-body reveal-text">
-                        Nossa equipe multidisciplinar integra arquitetura, design de interiores, paisagismo e tecnologia
-                        3D
-                        para entregar experiências completas, do briefing à entrega das chaves.
+                        Atuamos em projetos residenciais, comerciais e de interiores, com uma abordagem integrada que
+                        acompanha todas as etapas — do primeiro estudo ao detalhamento e à execução da obra.
                     </p>
                     <a href="#servicos" class="link-arrow reveal-text" aria-label="Ver nossos serviços">
                         <span>Nossos Serviços</span>
@@ -506,33 +507,8 @@
             </div>
         </section>
 
-        <!-- ═══════════════════ STATS ═══════════════════ -->
-        <section class="stats-section" aria-label="Números do estúdio">
-            <div class="stats-grid">
-                <div class="stat-card" id="stat1">
-                    <span class="stat-counter" data-target="150" aria-label="150 mais Projetos entregues">150</span>
-                    <span class="stat-plus" aria-hidden="true">+</span>
-                    <p class="stat-label">Projetos Entregues</p>
-                </div>
-                <div class="stat-card" id="stat2">
-                    <span class="stat-counter" data-target="12" aria-label="12 Anos de experiência">12</span>
-                    <p class="stat-label">Anos de Experiência</p>
-                </div>
-                <div class="stat-card" id="stat3">
-                    <span class="stat-counter" data-target="98"
-                        aria-label="98 porcento satisfação de clientes">98</span>
-                    <span class="stat-plus" aria-hidden="true">%</span>
-                    <p class="stat-label">Satisfação dos Clientes</p>
-                </div>
-                <div class="stat-card" id="stat4">
-                    <span class="stat-counter" data-target="35" aria-label="35 Prêmios conquistados">35</span>
-                    <p class="stat-label">Prêmios Conquistados</p>
-                </div>
-            </div>
-        </section>
-
         <!-- ═══════════════════ WHY CHOOSE US ═══════════════════ -->
-        <section class="why-section" aria-label="Por que nos escolher">
+        <section class="why-section" id="diferenciais" aria-label="Diferenciais do estúdio">
             <div class="why-grid">
                 <div class="why-image-col">
                     <div class="why-img-wrap parallax-wrap">
@@ -614,60 +590,35 @@
             </div>
         </section>
 
-        <!-- ═══════════════════ CLIENTS MARQUEE ═══════════════════ -->
-        <section class="clients-section" aria-label="Clientes e parceiros">
-            <div class="clients-header">
-                <p class="section-label reveal-text">Parceiros & Clientes</p>
+        <!-- ═══════════════════ PROCESS ═══════════════════ -->
+        <section class="process-section" id="processo" aria-label="Nosso processo de trabalho">
+            <div class="process-header">
+                <p class="section-label reveal-text">Como Trabalhamos</p>
+                <h2 class="section-title reveal-text">Um processo claro,<br /><em>do início à entrega.</em></h2>
+                <p class="process-intro reveal-text">Cada etapa é conduzida com proximidade, transparência e atenção aos detalhes.</p>
             </div>
-            <div class="marquee-wrapper" aria-hidden="true">
-                <div class="marquee-track" id="marqueeTrack">
-                    <div class="marquee-inner">
-                        <span class="client-logo">BMW</span>
-                        <span class="client-logo">AUDI</span>
-                        <span class="client-logo">PORSCHE</span>
-                        <span class="client-logo">ROLEX</span>
-                        <span class="client-logo">HILTON</span>
-                        <span class="client-logo">MARRIOTT</span>
-                        <span class="client-logo">TESLA</span>
-                        <span class="client-logo">GOOGLE</span>
-                        <span class="client-logo">MICROSOFT</span>
-                        <span class="client-logo">AMAZON</span>
-                        <span class="client-logo">NIKE</span>
-                        <span class="client-logo">ADIDAS</span>
-                        <span class="client-logo">DELL</span>
-                        <span class="client-logo">SAMSUNG</span>
-                        <span class="client-logo">ORACLE</span>
-                        <span class="client-logo">ADOBE</span>
-                        <span class="client-logo">INTEL</span>
-                        <span class="client-logo">CISCO</span>
-                        <span class="client-logo">LG</span>
-                        <span class="client-logo">SONY</span>
-                    </div>
-                    <!-- Duplicate for seamless loop -->
-                    <div class="marquee-inner" aria-hidden="true">
-                        <span class="client-logo">BMW</span>
-                        <span class="client-logo">AUDI</span>
-                        <span class="client-logo">PORSCHE</span>
-                        <span class="client-logo">ROLEX</span>
-                        <span class="client-logo">HILTON</span>
-                        <span class="client-logo">MARRIOTT</span>
-                        <span class="client-logo">TESLA</span>
-                        <span class="client-logo">GOOGLE</span>
-                        <span class="client-logo">MICROSOFT</span>
-                        <span class="client-logo">AMAZON</span>
-                        <span class="client-logo">NIKE</span>
-                        <span class="client-logo">ADIDAS</span>
-                        <span class="client-logo">DELL</span>
-                        <span class="client-logo">SAMSUNG</span>
-                        <span class="client-logo">ORACLE</span>
-                        <span class="client-logo">ADOBE</span>
-                        <span class="client-logo">INTEL</span>
-                        <span class="client-logo">CISCO</span>
-                        <span class="client-logo">LG</span>
-                        <span class="client-logo">SONY</span>
-                    </div>
-                </div>
-            </div>
+            <ol class="process-grid">
+                <li class="process-card reveal-text">
+                    <span class="process-num">01</span>
+                    <h3>Imersão</h3>
+                    <p>Entendemos sua rotina, necessidades, referências, terreno e expectativas para o projeto.</p>
+                </li>
+                <li class="process-card reveal-text">
+                    <span class="process-num">02</span>
+                    <h3>Concepção</h3>
+                    <p>Transformamos o briefing em estudos, soluções espaciais e uma proposta arquitetônica autoral.</p>
+                </li>
+                <li class="process-card reveal-text">
+                    <span class="process-num">03</span>
+                    <h3>Detalhamento</h3>
+                    <p>Desenvolvemos os projetos técnicos, especificações e compatibilizações necessárias à execução.</p>
+                </li>
+                <li class="process-card reveal-text">
+                    <span class="process-num">04</span>
+                    <h3>Acompanhamento</h3>
+                    <p>Apoiamos a obra e as decisões finais para garantir fidelidade ao conceito e qualidade na entrega.</p>
+                </li>
+            </ol>
         </section>
 
         <!-- ═══════════════════ CONTACT ═══════════════════ -->
@@ -675,11 +626,10 @@
             <div class="contact-grid">
                 <div class="contact-info">
                     <p class="section-label reveal-text">Fale Conosco</p>
-                    <h2 class="section-title reveal-text">Vamos Criar<br /><em>Algo Incrível?</em></h2>
+                    <h2 class="section-title reveal-text">Vamos conversar<br /><em>sobre seu projeto?</em></h2>
                     <p class="contact-body reveal-text">
-                        Estamos prontos para transformar sua ideia em um projeto extraordinário. Conte-nos sobre seu
-                        sonho e
-                        daremos vida a ele.
+                        Conte-nos o que você deseja construir ou transformar. Nossa equipe entrará em contato para
+                        entender o contexto e orientar os próximos passos.
                     </p>
                     <div class="contact-details reveal-text">
                         <div class="contact-detail-item">
@@ -696,8 +646,8 @@
                                     stroke="#C6A66B" stroke-width="1.4" />
                                 <path d="M2 4l7 6 7-6" stroke="#C6A66B" stroke-width="1.4" stroke-linecap="round" />
                             </svg>
-                            <a href="mailto:contato@thaisarquitetura.com.br"
-                                aria-label="Enviar e-mail">contato@thaisarquitetura.com.br</a>
+                            <a href="mailto:contato@taisarquitetura.com.br"
+                                aria-label="Enviar e-mail">contato@taisarquitetura.com.br</a>
                         </div>
                         <div class="contact-detail-item">
                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
@@ -753,8 +703,8 @@
         </section>
     </main>
 
-    <a href="https://wa.me/5565993063676?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Thais%20Arquitetura%20e%20gostaria%20de%20iniciar%20um%20projeto."
-        class="whatsapp-float" target="_blank" rel="noopener" aria-label="Falar com Thais Arquitetura pelo WhatsApp">
+    <a href="https://wa.me/5565993063676?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Tais%20Arquitetura%20e%20gostaria%20de%20iniciar%20um%20projeto."
+        class="whatsapp-float" target="_blank" rel="noopener" aria-label="Falar com Tais Arquitetura pelo WhatsApp">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M12.04 3.5a8.45 8.45 0 0 0-7.28 12.73L3.9 20.5l4.34-.82A8.45 8.45 0 1 0 12.04 3.5Z"
                 stroke="currentColor" stroke-width="1.55" stroke-linejoin="round" />
@@ -773,8 +723,8 @@
         <div class="footer-content">
             <div class="footer-top">
                 <div class="footer-brand">
-                    <a href="#home" class="footer-logo" aria-label="Thais Arquitetura — Início">
-                        <span class="logo-text">THAIS</span>
+                    <a href="#home" class="footer-logo" aria-label="Tais Arquitetura — Início">
+                        <span class="logo-text">TAIS</span>
                         <span class="logo-sub">ARQUITETURA</span>
                     </a>
                     <p class="footer-tagline">Criamos espaços que inspiram.</p>
@@ -787,6 +737,8 @@
                             <li><a href="#sobre">Sobre</a></li>
                             <li><a href="#portfolio">Projetos</a></li>
                             <li><a href="#servicos">Serviços</a></li>
+                            <li><a href="#processo">Processo</a></li>
+                            <li><a href="#diferenciais">Diferenciais</a></li>
                         </ul>
                     </div>
                     <div class="footer-nav-col">
@@ -801,7 +753,7 @@
                     <div class="footer-nav-col">
                         <h4 class="footer-nav-title">Contato</h4>
                         <ul role="list">
-                            <li><a href="mailto:contato@thaisarquitetura.com.br">E-mail</a></li>
+                            <li><a href="mailto:contato@taisarquitetura.com.br">E-mail</a></li>
                             <li><a href="tel:+5565993063676">Telefone</a></li>
                             <li><a href="#contato">Projeto</a></li>
                         </ul>
@@ -845,7 +797,7 @@
             </div>
 
             <div class="footer-bottom">
-                <p class="footer-copy">© 2026 Thais Arquitetura. Todos os direitos reservados.</p>
+                <p class="footer-copy">© 2026 Tais Arquitetura. Todos os direitos reservados.</p>
                 <p class="footer-credit">Design por <span>Luiz Poloni</span></p>
             </div>
         </div>
