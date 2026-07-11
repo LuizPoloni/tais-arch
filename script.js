@@ -68,7 +68,7 @@ function initHeroVideo() {
   const playPromise = video.play();
   if (playPromise && typeof playPromise.catch === 'function') {
     playPromise.catch(() => {
-      video.setAttribute('data-playback', 'poster');
+      video.setAttribute('data-playback', 'unavailable');
     });
   }
 }
